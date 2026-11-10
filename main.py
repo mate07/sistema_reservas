@@ -6,7 +6,9 @@ from espacios import (
     obtener_todos_los_espacios,
     buscar_espacio_por_codigo,
     obtener_espacios_disponibles,
-    obtener_tipos_de_espacio
+    obtener_tipos_de_espacio,
+    # SEMANA 2: función para guardar un espacio nuevo.
+    registrar_espacio
 )
 
 
@@ -56,7 +58,9 @@ def menu_principal():
     print("  2. Consultar espacio")
     print("  3. Ver espacios disponibles")
     print("  4. Ver tipos de espacios")
-    print("  5. Salir")
+    # SEMANA 2: nueva opción del menú.
+    print("  5. Registrar espacio")
+    print("  6. Salir")
     print()
 
     linea("-")
@@ -165,6 +169,82 @@ def consultar_espacio():
     pausa()
 
 
+# SEMANA 2: pantalla, validación y registro de un espacio nuevo.
+def registrar_nuevo_espacio():
+    """
+    Solicita los datos de un espacio y lo guarda si son válidos.
+    """
+
+    limpiar_pantalla()
+
+    titulo("REGISTRO DE ESPACIO")
+
+    print()
+
+    codigo = input("Código: ").strip()
+    nombre = input("Nombre: ").strip()
+    tipo = input("Tipo: ").strip()
+    capacidad_texto = input("Capacidad: ").strip()
+    ubicacion = input("Ubicación (opcional): ").strip()
+
+    if codigo == "" or nombre == "" or tipo == "":
+
+        print()
+        print("Código, nombre y tipo son obligatorios.")
+
+        pausa()
+
+        return
+
+    try:
+        capacidad = int(capacidad_texto)
+
+    except ValueError:
+
+        print()
+        print("La capacidad debe ser un número entero.")
+
+        pausa()
+
+        return
+
+    if capacidad <= 0:
+
+        print()
+        print("La capacidad debe ser mayor que cero.")
+
+        pausa()
+
+        return
+
+    if buscar_espacio_por_codigo(codigo) is not None:
+
+        print()
+        print("Ya existe un espacio con ese código.")
+
+        pausa()
+
+        return
+
+    registrado = registrar_espacio(
+        codigo,
+        nombre,
+        tipo,
+        capacidad,
+        ubicacion
+    )
+
+    print()
+
+    if registrado:
+        print("Espacio registrado correctamente.")
+
+    else:
+        print("No se pudo registrar: el código ya existe.")
+
+    pausa()
+
+
 def listar_disponibles():
 
     limpiar_pantalla()
@@ -244,7 +324,12 @@ def ejecutar_sistema():
 
             listar_tipos()
 
+        # SEMANA 2: registro de espacios desde el menú principal.
         elif opcion == "5":
+
+            registrar_nuevo_espacio()
+
+        elif opcion == "6":
 
             limpiar_pantalla()
 

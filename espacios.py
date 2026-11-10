@@ -1,3 +1,5 @@
+import sqlite3
+
 from database import obtener_conexion
 
 
@@ -92,6 +94,48 @@ def buscar_espacio_por_codigo(codigo):
         return None
 
     return convertir_a_diccionario(fila)
+
+
+# SEMANA 2: inserción de un nuevo espacio en la base de datos.
+def registrar_espacio(codigo, nombre, tipo, capacidad, ubicacion):
+    """
+    Guarda un espacio nuevo con estado inicial DISPONIBLE.
+
+    Retorna True si el registro se guardó o False si el código ya existe.
+    """
+
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+
+    try:
+        cursor.execute("""
+            INSERT INTO espacios (
+                codigo,
+                nombre,
+                tipo,
+                capacidad,
+                ubicacion,
+                estado
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            codigo,
+            nombre,
+            tipo,
+            capacidad,
+            ubicacion,
+            "DISPONIBLE"
+        ))
+
+        conexion.commit()
+
+        return True
+
+    except sqlite3.IntegrityError:
+        return False
+
+    finally:
+        conexion.close()
 
 
 def obtener_espacios_disponibles():
