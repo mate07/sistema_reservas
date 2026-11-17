@@ -8,7 +8,11 @@ from espacios import (
     obtener_espacios_disponibles,
     obtener_tipos_de_espacio,
     # SEMANA 2: función para guardar un espacio nuevo.
-    registrar_espacio
+    registrar_espacio,
+    # ===== INICIO SEMANA 3 =====
+    # SEMANA 3: función para actualizar un espacio existente.
+    actualizar_espacio
+    # ===== FIN SEMANA 3 =====
 )
 
 
@@ -60,7 +64,11 @@ def menu_principal():
     print("  4. Ver tipos de espacios")
     # SEMANA 2: nueva opción del menú.
     print("  5. Registrar espacio")
-    print("  6. Salir")
+    # ===== INICIO SEMANA 3 =====
+    # SEMANA 3: nueva opción del menú.
+    print("  6. Actualizar espacio")
+    # ===== FIN SEMANA 3 =====
+    print("  7. Salir")
     print()
 
     linea("-")
@@ -245,6 +253,108 @@ def registrar_nuevo_espacio():
     pausa()
 
 
+# ===== INICIO SEMANA 3 =====
+# SEMANA 3: pantalla para editar datos sin cambiar el código.
+def actualizar_datos_espacio():
+    """
+    Solicita un código y actualiza los datos editables del espacio.
+    """
+
+    limpiar_pantalla()
+
+    titulo("ACTUALIZACIÓN DE ESPACIO")
+
+    print()
+
+    codigo = input("Código del espacio a actualizar: ").strip()
+
+    if codigo == "":
+
+        print()
+        print("Debe ingresar un código.")
+
+        pausa()
+
+        return
+
+    espacio = buscar_espacio_por_codigo(codigo)
+
+    if espacio is None:
+
+        print()
+        print("Espacio no encontrado.")
+
+        pausa()
+
+        return
+
+    print()
+    print("Presione ENTER para conservar el valor actual.")
+    print()
+
+    nombre = input(f"Nombre [{espacio['nombre']}]: ").strip()
+    tipo = input(f"Tipo [{espacio['tipo']}]: ").strip()
+    capacidad_texto = input(
+        f"Capacidad [{espacio['capacidad']}]: "
+    ).strip()
+
+    ubicacion_actual = espacio["ubicacion"] or ""
+    ubicacion = input(f"Ubicación [{ubicacion_actual}]: ").strip()
+
+    if nombre == "":
+        nombre = espacio["nombre"]
+
+    if tipo == "":
+        tipo = espacio["tipo"]
+
+    if capacidad_texto == "":
+        capacidad = espacio["capacidad"]
+
+    else:
+        try:
+            capacidad = int(capacidad_texto)
+
+        except ValueError:
+
+            print()
+            print("La capacidad debe ser un número entero.")
+
+            pausa()
+
+            return
+
+    if capacidad <= 0:
+
+        print()
+        print("La capacidad debe ser mayor que cero.")
+
+        pausa()
+
+        return
+
+    if ubicacion == "":
+        ubicacion = ubicacion_actual
+
+    actualizado = actualizar_espacio(
+        espacio["codigo"],
+        nombre,
+        tipo,
+        capacidad,
+        ubicacion
+    )
+
+    print()
+
+    if actualizado:
+        print("Espacio actualizado correctamente.")
+
+    else:
+        print("No se pudo actualizar el espacio.")
+
+    pausa()
+# ===== FIN SEMANA 3 =====
+
+
 def listar_disponibles():
 
     limpiar_pantalla()
@@ -329,7 +439,14 @@ def ejecutar_sistema():
 
             registrar_nuevo_espacio()
 
+        # ===== INICIO SEMANA 3 =====
+        # SEMANA 3: actualización de espacios desde el menú principal.
         elif opcion == "6":
+
+            actualizar_datos_espacio()
+
+        # ===== FIN SEMANA 3 =====
+        elif opcion == "7":
 
             limpiar_pantalla()
 

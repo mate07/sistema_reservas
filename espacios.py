@@ -138,6 +138,44 @@ def registrar_espacio(codigo, nombre, tipo, capacidad, ubicacion):
         conexion.close()
 
 
+# ===== INICIO SEMANA 3 =====
+# SEMANA 3: actualización de los datos editables de un espacio.
+def actualizar_espacio(codigo, nombre, tipo, capacidad, ubicacion):
+    """
+    Actualiza un espacio existente sin modificar su código ni su estado.
+
+    Retorna True cuando se actualiza un registro y False si no existe.
+    """
+
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+
+    cursor.execute("""
+        UPDATE espacios
+        SET
+            nombre = ?,
+            tipo = ?,
+            capacidad = ?,
+            ubicacion = ?
+        WHERE UPPER(codigo) = UPPER(?)
+    """, (
+        nombre,
+        tipo,
+        capacidad,
+        ubicacion,
+        codigo
+    ))
+
+    conexion.commit()
+
+    actualizado = cursor.rowcount > 0
+
+    conexion.close()
+
+    return actualizado
+# ===== FIN SEMANA 3 =====
+
+
 def obtener_espacios_disponibles():
     """
     Obtiene únicamente espacios cuyo estado es DISPONIBLE.
