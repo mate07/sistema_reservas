@@ -11,8 +11,12 @@ from espacios import (
     registrar_espacio,
     # ===== INICIO SEMANA 3 =====
     # SEMANA 3: función para actualizar un espacio existente.
-    actualizar_espacio
+    actualizar_espacio,
     # ===== FIN SEMANA 3 =====
+    # ===== INICIO SEMANA 4 =====
+    # SEMANA 4: función para eliminar un espacio existente.
+    eliminar_espacio
+    # ===== FIN SEMANA 4 =====
 )
 
 
@@ -68,7 +72,11 @@ def menu_principal():
     # SEMANA 3: nueva opción del menú.
     print("  6. Actualizar espacio")
     # ===== FIN SEMANA 3 =====
-    print("  7. Salir")
+    # ===== INICIO SEMANA 4 =====
+    # SEMANA 4: nueva opción del menú.
+    print("  7. Eliminar espacio")
+    # ===== FIN SEMANA 4 =====
+    print("  8. Salir")
     print()
 
     linea("-")
@@ -355,6 +363,74 @@ def actualizar_datos_espacio():
 # ===== FIN SEMANA 3 =====
 
 
+# ===== INICIO SEMANA 4 =====
+# SEMANA 4: pantalla de confirmación y eliminación de un espacio.
+def eliminar_datos_espacio():
+    """
+    Busca un espacio por código y lo elimina después de confirmarlo.
+    """
+
+    limpiar_pantalla()
+
+    titulo("ELIMINACIÓN DE ESPACIO")
+
+    print()
+
+    codigo = input("Código del espacio a eliminar: ").strip()
+
+    if codigo == "":
+
+        print()
+        print("Debe ingresar un código.")
+
+        pausa()
+
+        return
+
+    espacio = buscar_espacio_por_codigo(codigo)
+
+    if espacio is None:
+
+        print()
+        print("Espacio no encontrado.")
+
+        pausa()
+
+        return
+
+    print()
+    print(f"Código : {espacio['codigo']}")
+    print(f"Nombre : {espacio['nombre']}")
+    print(f"Tipo   : {espacio['tipo']}")
+    print()
+
+    confirmacion = input(
+        "¿Confirma eliminar este espacio? (S/N): "
+    ).strip().upper()
+
+    if confirmacion != "S":
+
+        print()
+        print("Eliminación cancelada.")
+
+        pausa()
+
+        return
+
+    eliminado = eliminar_espacio(espacio["codigo"])
+
+    print()
+
+    if eliminado:
+        print("Espacio eliminado correctamente.")
+
+    else:
+        print("No se pudo eliminar el espacio.")
+
+    pausa()
+# ===== FIN SEMANA 4 =====
+
+
 def listar_disponibles():
 
     limpiar_pantalla()
@@ -446,7 +522,14 @@ def ejecutar_sistema():
             actualizar_datos_espacio()
 
         # ===== FIN SEMANA 3 =====
+        # ===== INICIO SEMANA 4 =====
+        # SEMANA 4: eliminación de espacios desde el menú principal.
         elif opcion == "7":
+
+            eliminar_datos_espacio()
+
+        # ===== FIN SEMANA 4 =====
+        elif opcion == "8":
 
             limpiar_pantalla()
 

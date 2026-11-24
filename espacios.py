@@ -176,6 +176,33 @@ def actualizar_espacio(codigo, nombre, tipo, capacidad, ubicacion):
 # ===== FIN SEMANA 3 =====
 
 
+# ===== INICIO SEMANA 4 =====
+# SEMANA 4: eliminación de un espacio mediante su código.
+def eliminar_espacio(codigo):
+    """
+    Elimina un espacio existente.
+
+    Retorna True si se elimina un registro o False si no existe.
+    """
+
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+
+    cursor.execute("""
+        DELETE FROM espacios
+        WHERE UPPER(codigo) = UPPER(?)
+    """, (codigo,))
+
+    conexion.commit()
+
+    eliminado = cursor.rowcount > 0
+
+    conexion.close()
+
+    return eliminado
+# ===== FIN SEMANA 4 =====
+
+
 def obtener_espacios_disponibles():
     """
     Obtiene únicamente espacios cuyo estado es DISPONIBLE.
